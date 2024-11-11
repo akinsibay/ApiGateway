@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+  s_api_gateway:
+    container_name: c_api_gateway
+    image: akinsibay/apigateway
+    build:
+      context: .
+      dockerfile: APIGateway/Dockerfile
+    ports:
+      - 5170:5170
+    networks:
+      - micro_net
+      - int_net
+  
+  s_contact_api:
+    container_name: c_contact_api
+    image: akinsibay/contactapi
+    build:
+      context: .
+      dockerfile: Services/ContactAPI/Contact.API/Dockerfile
+    ports:
+      - 5124:5124
+    networks:
+      - int_net
+  
+  s_res_api:
+    container_name: c_res_api
+    image: akinsibay/reservationapi
+    build:
+      context: .
+      dockerfile: Services/ReservationAPI/Reservation.API/Dockerfile
+    ports:
+      - 5232:5232
+    networks:
+      - int_net
+
+
+
+networks:
+  int_net:
+    driver: overlay
+    internal: true
+  micro_net:
+    driver: bridge
